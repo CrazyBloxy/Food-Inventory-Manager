@@ -5,25 +5,11 @@ import { MdDeleteForever, MdEdit } from "react-icons/md";
 import { AddUserModal } from "./forms/AddUser";
 import { EditUserModal } from "./forms/EditUser";
 
-interface InventoryItem {
-    id: number;
-    item_name: string;
-    amount: number;
-    category: string;
-    expiration_date: string;
-}
-
 
 export const AdminDashboard: React.FC = () => {
     const [activeModal, setActiveModal] = useState<"add" | "edit" | null>(null);
 
-    // Read-only stock snapshot for the employee view grid
-    const mockInventory: InventoryItem[] = [
-        { id: 1, item_name: "Fresh Whole Milk 1L", amount: 24, category: "Dairy", expiration_date: "2026-10-05" },
-        { id: 2, item_name: "Raw Chicken Breast kg", amount: 0, category: "Meat & Poultry", expiration_date: "2026-10-02" },
-        { id: 3, item_name: "Romaine Lettuce Bunch", amount: 8, category: "Produce", expiration_date: "2026-10-01" }
-    ];
-    
+
     return (
         <div className="w-full">
             <main className="p-8 flex flex-col gap-6 max-w-5xl mx-auto w-full">

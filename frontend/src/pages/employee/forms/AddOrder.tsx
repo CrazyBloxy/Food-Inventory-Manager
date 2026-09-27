@@ -16,8 +16,8 @@ export const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose })
                 {/* POPUP SUB-HEADER CONTROLS PANEL */}
                 <div className="p-6 border-b border-slate-800/80 bg-[#060b14]/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h3 className="text-xl font-bold text-slate-100">Compile New Requisition Order</h3>
-                        <p className="text-xs text-slate-400 mt-0.5">Select multiple database items, check inventory margins, and assign dispatch counts.</p>
+                        <h3 className="text-xl font-bold text-slate-100">Create Order</h3>
+                        <p className="text-xs text-slate-400 mt-0.5">Select items, check inventory margins, and assign dispatch counts.</p>
                     </div>
 
                     {/* MODAL INTERNAL LOCAL SEARCH MECHANISM HEADER BOX */}

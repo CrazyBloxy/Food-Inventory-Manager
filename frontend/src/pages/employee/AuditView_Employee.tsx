@@ -11,7 +11,7 @@ interface EmployeeAuditLogStructure {
 }
 
 export const AuditLogsView_Employee: React.FC = () => {
-    
+
     const mockEmployeeLogs: EmployeeAuditLogStructure[] = [
         {
             id: 801,
@@ -29,9 +29,19 @@ export const AuditLogsView_Employee: React.FC = () => {
             <main className="p-8 flex flex-col gap-6 max-w-5xl mx-auto w-full">
 
                 {/* HEADER SECTION */}
-                <div>
-                    <h1 className="text-2xl font-bold text-slate-100">My Activity Trails</h1>
-                    <p className="text-xs text-slate-400 mt-1">Review your recent session history and generated submission metrics logs.</p>
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h1 className="text-2xl font-bold text-slate-100">Order Logs</h1>
+                        <p className="text-xs text-slate-400 mt-1">Review recent session history and generated submission metrics logs.</p>
+                    </div>
+
+                    <div className="flex items-center gap-3 w-full max-w-md justify-end">
+                        <input
+                            type="text"
+                            placeholder="Filter Logs..."
+                            className="input w-full bg-[#0a1224] border border-slate-800 rounded-xl text-sm h-11 text-slate-200 px-4 focus:outline-none"
+                        />
+                    </div>
                 </div>
 
                 {/* SCROLLABLE TABLE CONTAINER */}

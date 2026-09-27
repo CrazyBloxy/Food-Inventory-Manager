@@ -12,7 +12,7 @@ export const EditItemModal: React.FC<EditInventoryModalProps> = ({ isOpen, onClo
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
             <div className="bg-[#0b1326] border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
                 <div>
-                    <h3 className="text-lg font-bold text-slate-100">Update Stock Levels</h3>
+                    <h3 className="text-lg font-bold text-slate-100">Update Item</h3>
                     <p className="text-xs text-slate-400 mt-0.5">Modify the active registry limits or product metadata tracking.</p>
                 </div>
 

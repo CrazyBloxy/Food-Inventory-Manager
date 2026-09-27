@@ -76,7 +76,7 @@ export const NavBar = () => {
                                 }`}
                         >
                             <LuHistory size={18} />
-                            Audit Logs
+                            Inventory Logs
                         </button>
                     </>
                 )}
@@ -102,7 +102,7 @@ export const NavBar = () => {
                                 }`}
                         >
                             <LuHistory size={18} />
-                            Audit Logs
+                            Order Logs
                         </button>
                     </>
                 )}
