@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { AddUserModal } from "./forms/AddUser";
+
 
 export const AdminDashboard: React.FC = () => {
+    const [openPopup, setOpenPopup] = useState<boolean>(false);
+
+
     return (
         <div className="w-full">
             <main className="p-8 flex flex-col gap-6 max-w-5xl mx-auto w-full">
-                
+
                 {/* HEADER SECTION */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
@@ -19,7 +24,7 @@ export const AdminDashboard: React.FC = () => {
                             placeholder="Search Users..."
                             className="input w-full bg-[#0a1224] border border-slate-800 rounded-xl text-sm h-11 text-slate-200 px-4 focus:outline-none"
                         />
-                        <button className="btn h-11 min-h-0 bg-blue-600 hover:bg-blue-700 text-white border-none rounded-xl px-4 text-sm font-medium whitespace-nowrap">
+                        <button onClick={() => setOpenPopup(true)} className="btn btn-primary">
                             + Add User
                         </button>
                     </div>
@@ -52,6 +57,7 @@ export const AdminDashboard: React.FC = () => {
                     </table>
                 </div>
             </main>
+            <AddUserModal isOpen={openPopup} onClose={() => setOpenPopup(false)} />
         </div>
     );
 };

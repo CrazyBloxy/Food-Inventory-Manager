@@ -7,7 +7,7 @@ import { NavBar } from "./assets/navbar/nav"
 function App() {
 
   return (
-    <div className="flex flex-row min-h-screen w-full bg-[#080d1a] text-slate-200">
+    <div className="flex flex-row min-h-screen w-full">
       {/* Navigation Bar */}
       <NavBar />
       <main className="flex-1 w-full overflow-x-hidden">

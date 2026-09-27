@@ -1,5 +1,10 @@
+interface AddUserModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
 
-export const AddUser = () => {
+export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
@@ -51,7 +56,7 @@ export const AddUser = () => {
 
                     {/* Form Action Controls */}
                     <div className="flex items-center justify-end gap-3 mt-2">
-                        <button type="button" className="btn h-11 min-h-0 bg-transparent hover:bg-slate-800/50 text-slate-400 border border-slate-800 rounded-xl px-4 text-sm font-medium">
+                        <button onClick={onClose} type="button" className="btn h-11 min-h-0 bg-transparent hover:bg-slate-800/50 text-slate-400 border border-slate-800 rounded-xl px-4 text-sm font-medium">
                             Cancel
                         </button>
                         <button type="submit" className="btn h-11 min-h-0 bg-blue-600 hover:bg-blue-700 text-white border-none rounded-xl px-5 text-sm font-medium">

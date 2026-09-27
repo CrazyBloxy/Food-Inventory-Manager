@@ -1,8 +1,15 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 
 
 export const NavBar = () => {
+    const location = useLocation();
+
+    if (location.pathname === "/") {
+        return null;
+    }
+
     return (
         <aside className="w-64 bg-[#050811] border-r border-slate-800/60 flex flex-col shrink-0 h-screen sticky">
             <div className="p-6 border-b border-slate-800/40 flex items-center gap-3">
@@ -12,14 +19,11 @@ export const NavBar = () => {
 
             <nav className="flex-1 p-4 space-y-1.5">
                 <button 
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all`}
-                >
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all`}>
                     Dashboard
                 </button>
                 
-                <button
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all`}
-                >
+                <button className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all`}>
                     Audit Logs
                 </button>
             </nav>
