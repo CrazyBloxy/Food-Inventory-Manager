@@ -1,9 +1,11 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
+import { LuLayoutDashboard, LuHistory, LuLogOut } from "react-icons/lu";
 
 
 export const NavBar = () => {
+    const navigate = useNavigate();
     const location = useLocation();
 
     if (location.pathname === "/") {
@@ -11,30 +13,60 @@ export const NavBar = () => {
     }
 
     return (
-        <aside className="w-64 bg-[#050811] border-r border-slate-800/60 flex flex-col shrink-0 h-screen sticky">
+        <aside className="w-64 bg-[#050811] border-r border-slate-800/60 flex flex-col shrink-0 h-screen sticky top-0">
             <div className="p-6 border-b border-slate-800/40 flex items-center gap-3">
-                <span className="text-xl font-bold text-blue-500 bg-blue-500/10 px-3 py-1 rounded">FP</span>
-                <span className="text-xs uppercase tracking-widest text-slate-500 font-semibold">Food Portal</span>
+                <span className="text-xl bg-blue-500/10 px-3 py-1 rounded">
+                    <img
+                        src="/box.svg"
+                        alt="Logo"
+                        className="w-10 h-10 object-contain"
+                    />
+                </span>
+                <span className="text-xs uppercase tracking-widest text-slate-500 font-semibold">Portal</span>
             </div>
 
-            <nav className="flex-1 p-4 space-y-1.5">
-                <button 
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all`}>
+            <nav className="flex-1 p-4 space-y-2">
+
+                {/* Dashboard Button — checks if active path is exactly "/admin" */}
+                <button
+                    onClick={() => navigate("/admin")} // 3. Click shifts path to /admin
+                    className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-blue-500/20 active:scale-[0.98] transition-all ${location.pathname === "/admin"
+                        ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
+                        : "text-slate-400"
+                        }`}
+                >
+                    <LuLayoutDashboard size={18} />
                     Dashboard
                 </button>
-                
-                <button className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all`}>
+
+                {/* Audit Logs Button — checks if active path is exactly "/audit" */}
+                <button
+                    onClick={() => navigate("/audit")} // 4. Click shifts path to /audit
+                    className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-slate-800/40 active:scale-[0.98] transition-all ${location.pathname === "/audit"
+                        ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
+                        : "text-slate-400"
+                        }`}
+                >
+                    <LuHistory size={18} />
                     Audit Logs
                 </button>
+
             </nav>
 
-            <div className="p-4 border-t border-slate-800/60 bg-slate-950/40 flex items-center justify-between">
-                <div>
-                    <p className="text-xs font-semibold text-slate-300">System Admin</p>
-                    <p className="text-[10px] text-slate-500">Admin Role</p>
+            <div className="p-4 border-t border-slate-800/60 flex items-center justify-between gap-2">
+                <div className="truncate">
+                    <p className="text-xs font-semibold text-slate-300 truncate">System Admin</p>
+                    <p className="text-[10px] text-slate-500 truncate">Admin Role</p>
                 </div>
-                <button className="text-xs text-slate-500 hover:text-rose-400 font-medium">
-                    Logout
+
+                {/* Logout Button */}
+                <button
+                    onClick={() => navigate("/")} // 5. Click returns to the login screen
+                    className="btn btn-ghost btn-xs h-8 min-h-0 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 active:scale-95 transition-all flex items-center gap-1.5 px-2.5 rounded-lg"
+                    title="Logout"
+                >
+                    <LuLogOut size={15} />
+                    <span className="text-xs font-medium tracking-wide">Logout</span>
                 </button>
             </div>
         </aside>

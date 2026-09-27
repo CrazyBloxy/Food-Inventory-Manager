@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import { LoginForm } from "./pages/LoginForm";
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
+import { AuditLogsView_Admin } from "./pages/admin/AuditView_Admin";
 
 import { NavBar } from "./assets/navbar/nav"
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginForm />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/audit" element={<AuditLogsView_Admin />} />
         </Routes>
       </main>
     </div>

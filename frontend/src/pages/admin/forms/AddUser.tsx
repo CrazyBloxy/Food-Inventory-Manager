@@ -10,7 +10,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose }) =
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
             <div className="bg-[#0b1326] border border-slate-800 w-full max-w-md rounded-2xl p-6 shadow-2xl flex flex-col gap-4">
                 <div>
-                    <h3 className="text-lg font-bold text-slate-100">Add New System User</h3>
+                    <h3 className="text-lg font-bold text-slate-100">Add New User</h3>
                     <p className="text-xs text-slate-400 mt-0.5">Register account privileges to the inventory portal database.</p>
                 </div>
 
@@ -40,7 +40,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose }) =
                         <label className="text-xs font-semibold uppercase text-slate-400 tracking-wide">Set PIN</label>
                         <input
                             type="password"
-                            placeholder="4 to 6 digit security code"
+                            placeholder="4 digit security code"
                             className="input w-full bg-[#0a1224] border border-slate-800 rounded-xl text-sm h-11 text-slate-200 px-4 focus:outline-none focus:border-blue-500"
                         />
                     </div>
@@ -60,7 +60,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ isOpen, onClose }) =
                             Cancel
                         </button>
                         <button type="submit" className="btn h-11 min-h-0 bg-blue-600 hover:bg-blue-700 text-white border-none rounded-xl px-5 text-sm font-medium">
-                            Save User
+                            Save
                         </button>
                     </div>
                 </form>
