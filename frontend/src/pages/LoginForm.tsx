@@ -5,8 +5,8 @@ export const LoginForm = () => {
 
     return (
         <div className="flex justify-center items-center min-h-screen">
-            <form className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-                <fieldset className="fieldset mb-5">
+            <form className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4 space-y-4">
+                <fieldset className="fieldset">
                     <label className="label">Username</label>
                     <input
                         type="text"
@@ -19,7 +19,7 @@ export const LoginForm = () => {
                     />
                 </fieldset>
 
-                <label className="fieldset mb-5">
+                <label className="fieldset">
                     <span className="label">Password</span>
                     <input
                         type="password"
