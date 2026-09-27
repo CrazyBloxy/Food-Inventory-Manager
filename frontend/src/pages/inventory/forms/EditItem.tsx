@@ -40,6 +40,17 @@ export const EditItemModal: React.FC<EditInventoryModalProps> = ({ isOpen, onClo
                         />
                     </div>
 
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-xs font-semibold uppercase text-slate-400 tracking-wide">Category</label>
+                        <input 
+                            type="number" 
+                            min="0" 
+                            placeholder="0" 
+                            className="input w-full bg-[#0a1224] border border-slate-800 rounded-xl text-sm h-11 text-slate-200 px-4 focus:outline-none focus:border-blue-500" 
+                            required 
+                        />
+                    </div>
+
                     {/* Expiration Date */}
                     <div className="flex flex-col gap-1.5">
                         <label className="text-xs font-semibold uppercase text-slate-400 tracking-wide">Expiration Date</label>

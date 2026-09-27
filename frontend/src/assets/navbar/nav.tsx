@@ -81,6 +81,32 @@ export const NavBar = () => {
                     </>
                 )}
 
+                {location.pathname.startsWith("/employee") && (
+                    <>
+                        <button
+                            onClick={() => navigate("/employee")}
+                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-blue-500/20 active:scale-[0.98] transition-all ${location.pathname === "/inventory"
+                                ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
+                                : "text-slate-400"
+                                }`}
+                        >
+                            <LuLayoutDashboard size={18} />
+                            Dashboard
+                        </button>
+
+                        <button
+                            onClick={() => navigate("/employee/audit")}
+                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-slate-800/40 active:scale-[0.98] transition-all ${location.pathname === "/audit"
+                                ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
+                                : "text-slate-400"
+                                }`}
+                        >
+                            <LuHistory size={18} />
+                            Audit Logs
+                        </button>
+                    </>
+                )}
+
             </nav>
 
             <div className="p-4 border-t border-slate-800/60 flex items-center justify-between gap-2">

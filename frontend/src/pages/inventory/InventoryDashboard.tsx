@@ -56,7 +56,7 @@ export const InventoryDashboard: React.FC = () => {
                             className="input w-full bg-[#0a1224] border border-slate-800 rounded-xl text-sm h-11 text-slate-200 px-4 focus:outline-none"
                         />
                         <button onClick={() => setActiveModal("add")} className="btn btn-primary h-11 min-h-0 rounded-xl font-medium text-sm border-none">
-                            + Add Item
+                            + Create Item
                         </button>
                     </div>
                 </div>

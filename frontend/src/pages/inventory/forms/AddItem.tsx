@@ -67,7 +67,7 @@ export const AddItemModal: React.FC<AddInventoryModalProps> = ({ isOpen, onClose
                             Cancel
                         </button>
                         <button type="submit" className="btn h-11 min-h-0 bg-blue-600 hover:bg-blue-700 text-white border-none rounded-xl px-5 text-sm font-medium">
-                            Save Stock
+                            Add Item
                         </button>
                     </div>
                 </form>
