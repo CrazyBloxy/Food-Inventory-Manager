@@ -51,7 +51,7 @@ export const AdminDashboard: React.FC = () => {
                             </thead>
                             <tbody>
                                 <tr className="border-b border-slate-800/50">
-                                    <td className="font-mono text-xs text-blue-400 py-4 px-6">Admin-001</td>
+                                    <td className="font-mono text-xs text-blue-400 py-4 px-6">1</td>
                                     <td className="py-4 px-6">J. Miller</td>
                                     <td className="py-4 px-6">Employee</td>
                                     <td className="py-4 px-6 text-emerald-400 text-xs">● Active</td>
