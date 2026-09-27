@@ -6,7 +6,7 @@ export const LoginForm = () => {
     return (
         <div className="flex justify-center items-center min-h-screen">
             <form className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
-                <fieldset className="fieldset">
+                <fieldset className="fieldset mb-5">
                     <label className="label">Username</label>
                     <input
                         type="text"
@@ -17,10 +17,9 @@ export const LoginForm = () => {
                         minLength={3} maxLength={30}
                         title="Only letters, numbers or dash"
                     />
-                    <p className="validator-hint hidden">Required</p>
                 </fieldset>
 
-                <label className="fieldset">
+                <label className="fieldset mb-5">
                     <span className="label">Password</span>
                     <input
                         type="password"
@@ -31,11 +30,9 @@ export const LoginForm = () => {
                         pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                         title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
                     />
-                    <span className="validator-hint hidden">Required</span>
                 </label>
 
                 <button className="btn btn-neutral mt-4" type="submit">Login</button>
-                <button className="btn btn-ghost mt-1" type="reset">Back</button>
             </form>
         </div>
     )

@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { HomePage } from "./pages/HomePage";
+
 import { LoginForm } from "./pages/LoginForm";
+import { AdminDashboard } from "./pages/admin/AdminDashboard";
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<LoginForm />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </main>
     </>
