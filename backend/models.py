@@ -3,14 +3,14 @@ from sqlalchemy.dialects.postgresql import JSONB
 from datetime import datetime, timezone
 from database import Base
 
-# 1. ROLES TABLE
+# ROLES TABLE
 class Role(Base):
     __tablename__ = "roles"
 
     id = Column(Integer, primary_key=True, index=True)
     role_name = Column(String(30), unique=True, nullable=False)
 
-# 2. USERS TABLE
+# USERS TABLE
 class User(Base):
     __tablename__ = "users"
 
@@ -22,14 +22,14 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
-# 3. CATEGORIES TABLE
+# CATEGORIES TABLE
 class Category(Base):
     __tablename__ = "categories"
 
     id = Column(Integer, primary_key=True, index=True)
     category_name = Column(String(50), unique=True, nullable=False)
 
-# 4. INVENTORY TABLE
+# INVENTORY TABLE
 class InventoryItem(Base):
     __tablename__ = "inventory"
 
@@ -45,7 +45,7 @@ class InventoryItem(Base):
         CheckConstraint("amount >= 0", name="check_amount_positive"),
     )
 
-# 5. ORDERS TABLE
+# ORDERS TABLE
 class Order(Base):
     __tablename__ = "orders"
 
@@ -53,7 +53,7 @@ class Order(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="RESTRICT"), nullable=False)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
-# 6. ORDER ITEMS TABLE
+# ORDER ITEMS TABLE
 class OrderItem(Base):
     __tablename__ = "order_items"
 
@@ -66,7 +66,7 @@ class OrderItem(Base):
         CheckConstraint("quantity_taken > 0", name="check_quantity_taken_positive"),
     )
 
-# 7. AUDIT LOGS TABLE
+# AUDIT LOGS TABLE
 class AuditLog(Base):
     __tablename__ = "audit_logs"
 

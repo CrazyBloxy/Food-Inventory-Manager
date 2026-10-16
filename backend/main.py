@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from database import get_db
 import models
+from auth_utils import hash_password
 
 app = FastAPI(title="Food Inventory Manager API")
 

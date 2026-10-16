@@ -20,12 +20,9 @@ async def get_db():
     async with SessionLocal() as session:
         try:
             yield session
-            # If the endpoint finishes without errors, automatically save the changes
             await session.commit()
         except Exception:
-            # If ANY backend error or crash happens, safely undo the broken operation
             await session.rollback()
             raise
         finally:
-            # Always close the session to free up your database connection slots
             await session.close()
