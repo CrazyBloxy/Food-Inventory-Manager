@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date, ForeignKey, CheckConstraint
 from sqlalchemy.dialects.postgresql import JSONB
 from datetime import datetime, timezone
-from database import Base
+from src.db.database import Base
 
 # ROLES TABLE
 class Role(Base):
