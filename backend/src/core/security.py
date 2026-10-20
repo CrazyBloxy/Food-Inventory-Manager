@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 from jose import jwt, JWTError
-from passlib.context import CryptContext
+import bcrypt
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class SecuritySettings(BaseSettings):
@@ -13,23 +13,23 @@ class SecuritySettings(BaseSettings):
 
 security_settings = SecuritySettings()
 
-# Passlib configuration for hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-# PASSWORD & PIN HASHING
+# DIRECT BCRYPT PASSWORD & PIN HASHING
 def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
+    # Hash using bcrypt directly
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+    return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
 
 def get_pin_hash(pin: str) -> str:
-    return pwd_context.hash(pin)
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(pin.encode("utf-8"), salt).decode("utf-8")
 
 def verify_pin_hash(plain_pin: str, hashed_pin: str) -> bool:
-    return pwd_context.verify(plain_pin, hashed_pin)
+    return bcrypt.checkpw(plain_pin.encode("utf-8"), hashed_pin.encode("utf-8"))
 
-# Aliases to support both naming conventions across route files
+# Aliases
 hash_password = get_password_hash
 hash_pin = get_pin_hash
 

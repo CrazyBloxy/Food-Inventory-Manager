@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date, ForeignKey, CheckConstraint
+from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import JSONB
 from datetime import datetime, timezone
 from src.db.database import Base
@@ -10,6 +11,8 @@ class Role(Base):
     id = Column(Integer, primary_key=True, index=True)
     role_name = Column(String(30), unique=True, nullable=False)
 
+    users = relationship("User", back_populates="role")
+
 # USERS TABLE
 class User(Base):
     __tablename__ = "users"
@@ -20,7 +23,9 @@ class User(Base):
     pin_hash = Column(String(255), nullable=False)
     role_id = Column(Integer, ForeignKey("roles.id", ondelete="RESTRICT"), nullable=False)
     is_active = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None), nullable=False)
+
+    role = relationship("Role", back_populates="users")
 
 # CATEGORIES TABLE
 class Category(Base):
@@ -28,6 +33,8 @@ class Category(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     category_name = Column(String(50), unique=True, nullable=False)
+
+    inventory_items = relationship("InventoryItem", back_populates="category")
 
 # INVENTORY TABLE
 class InventoryItem(Base):
@@ -38,8 +45,11 @@ class InventoryItem(Base):
     amount = Column(Integer, nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id", ondelete="RESTRICT"), nullable=False)
     expiration_date = Column(Date, nullable=False)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None), nullable=False)
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None), onupdate=lambda: datetime.now(timezone.utc).replace(tzinfo=None), nullable=False)
+
+    category = relationship("Category", back_populates="inventory_items")
+    order_items = relationship("OrderItem", back_populates="item")
 
     __table_args__ = (
         CheckConstraint("amount >= 0", name="check_amount_positive"),
@@ -51,7 +61,10 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="RESTRICT"), nullable=False)
-    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None), nullable=False)
+
+    order_items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
+    user = relationship("User")
 
 # ORDER ITEMS TABLE
 class OrderItem(Base):
@@ -61,6 +74,9 @@ class OrderItem(Base):
     order_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"), nullable=False)
     item_id = Column(Integer, ForeignKey("inventory.id", ondelete="RESTRICT"), nullable=False)
     quantity_taken = Column(Integer, nullable=False)
+
+    order = relationship("Order", back_populates="order_items")
+    item = relationship("InventoryItem", back_populates="order_items")
 
     __table_args__ = (
         CheckConstraint("quantity_taken > 0", name="check_quantity_taken_positive"),
@@ -78,4 +94,6 @@ class AuditLog(Base):
     record_id = Column(Integer, nullable=False)
     old_value = Column(JSONB, nullable=True, default=None)
     new_value = Column(JSONB, nullable=False)
-    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc).replace(tzinfo=None), nullable=False)
+
+    user = relationship("User")
