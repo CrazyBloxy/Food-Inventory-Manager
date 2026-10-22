@@ -1,7 +1,7 @@
 import axios from 'axios';
+import type { User, Category, InventoryItem, Order, OrderCreate, LoginPayload } from '../types';
 
-// 1. Reusable network connection pulling from your environment configuration
-export const API_URL = import.meta.env.VITE_BACKEND_API;
+export const API_URL = import.meta.env.VITE_BACKEND_API || "http://127.0.0.1:8000/api/v1";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -10,51 +10,71 @@ const api = axios.create({
   },
 });
 
-export interface Role {
-  id: number;
-  role_name: string;
-}
-
-export interface User {
-  id: number;
-  username: string;
-  role_id: number;
-  is_active: boolean;
-  created_at: string;
-}
-
-export interface Category {
-  id: number;
-  category_name: string;
-}
-
-export interface InventoryItem {
-  id: number;
-  item_name: string;
-  amount: number;
-  category_id: number;
-  expiration_date: string;
-}
-
-// 3. Centralized Service Layer (Clean, single-line functions your UI calls directly)
 export const foodPantryService = {
-  // Read all seeded user accounts (Admin Workflow)
-  getUsers: async (): Promise<User[]> => {
-    const response = await api.get("/users");
-    return response.data.data;
-  },
+    // --- Authentication ---
+    login: async (credentials: LoginPayload) => {
+        const response = await api.post("/auth/login", credentials);
+        return response.data;
+    },
 
-  // Read dynamic categories for dropdown inputs (Inventory Manager Workflow)
-  getCategories: async (): Promise<Category[]> => {
-    const response = await api.get("/categories");
-    return response.data.data;
-  },
+    // --- Users (Admin Workflow) ---
+    getUsers: async (): Promise<User[]> => {
+        const response = await api.get("/users");
+        return response.data.data || response.data;
+    },
 
-  // Read shelf inventory tracking lists (Employee / Manager Workflow)
-  getInventory: async (): Promise<InventoryItem[]> => {
-    const response = await api.get("/inventory");
-    return response.data.data;
-  },
+    createUser: async (userData: { username: string; password?: string; pin?: string; role_id: number }) => {
+        const response = await api.post("/users", userData);
+        return response.data;
+    },
+
+    updateUser: async (userId: number, userData: Partial<User>) => {
+        const response = await api.put(`/users/${userId}`, userData);
+        return response.data;
+    },
+
+    deleteUser: async (userId: number) => {
+        const response = await api.delete(`/users/${userId}`);
+        return response.data;
+    },
+
+    // --- Categories (Inventory Manager Workflow) ---
+    getCategories: async (): Promise<Category[]> => {
+        const response = await api.get("/categories");
+        return response.data.data || response.data;
+    },
+
+    // --- Inventory Management ---
+    getInventory: async (): Promise<InventoryItem[]> => {
+        const response = await api.get("/inventory");
+        return response.data.data || response.data;
+    },
+
+    createInventoryItem: async (itemData: { item_name: string; amount: number; category_id: number; expiration_date: string }) => {
+        const response = await api.post("/inventory", itemData);
+        return response.data;
+    },
+
+    updateInventoryItem: async (itemId: number, itemData: Partial<InventoryItem>) => {
+        const response = await api.put(`/inventory/${itemId}`, itemData);
+        return response.data;
+    },
+
+    deleteInventoryItem: async (itemId: number) => {
+        const response = await api.delete(`/inventory/${itemId}`);
+        return response.data;
+    },
+
+    // --- Orders & Distribution (Employee Workflow) ---
+    getOrders: async (): Promise<Order[]> => {
+        const response = await api.get("/orders");
+        return response.data.data || response.data;
+    },
+
+    createOrder: async (orderData: OrderCreate): Promise<Order> => {
+        const response = await api.post("/orders", orderData);
+        return response.data;
+    },
 };
 
 export default api;
