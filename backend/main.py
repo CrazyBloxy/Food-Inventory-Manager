@@ -6,7 +6,7 @@ from src.api.v1 import auth, inventory, orders, users, audit
 app = FastAPI(title="Food Inventory Manager API")
 
 origins = [
-    "http://localhost:5173/",
+    "http://localhost:5173",
 ]
 
 app.add_middleware(

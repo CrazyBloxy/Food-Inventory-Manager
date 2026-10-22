@@ -13,7 +13,22 @@ const api = axios.create({
 export const foodPantryService = {
     // --- Authentication ---
     login: async (credentials: LoginPayload) => {
-        const response = await api.post("/auth/login", credentials);
+        const params = new URLSearchParams();
+        params.append('username', credentials.username);
+        if (credentials.password) {
+            params.append('password', credentials.password);
+        }
+
+        const response = await api.post("/auth/login", params, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        });
+        return response.data;
+    },
+
+    getCurrentUser: async (): Promise<User> => {
+        const response = await api.get("/users/me"); // Adjust endpoint if your backend uses something else like "/profile"
         return response.data;
     },
 

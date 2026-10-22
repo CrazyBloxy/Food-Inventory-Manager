@@ -1,16 +1,23 @@
-import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { LuLayoutDashboard, LuHistory, LuLogOut } from "react-icons/lu";
-
 
 export const NavBar = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const validPrefixes = ["/admin", "/inventory", "/employee"];
+    const isValidRoute = validPrefixes.some(prefix => location.pathname.startsWith(prefix));
 
-    if (location.pathname === "/") {
+    // Hide sidebar on the login page ("/") or any undefined 404 page
+    if (location.pathname === "/" || !isValidRoute) {
         return null;
     }
+    
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        console.log("User logged out successfully.");
+        navigate("/");
+    };
 
     return (
         <aside className="w-64 bg-[#050811] border-r border-slate-800/60 flex flex-col shrink-0 h-screen sticky top-0">
@@ -26,16 +33,16 @@ export const NavBar = () => {
             </div>
 
             <nav className="flex-1 p-4 space-y-2">
-
-                {/* 1. ADMIN PANEL LINKS: Only visible if the URL starts with /admin or /audit */}
+                {/* 1. ADMIN PANEL LINKS */}
                 {(location.pathname.startsWith("/admin") || location.pathname.startsWith("/audit")) && (
                     <>
                         <button
                             onClick={() => navigate("/admin")}
-                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-blue-500/20 active:scale-[0.98] transition-all ${location.pathname === "/admin"
-                                ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
-                                : "text-slate-400"
-                                }`}
+                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-blue-500/20 active:scale-[0.98] transition-all ${
+                                location.pathname === "/admin"
+                                    ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
+                                    : "text-slate-400"
+                            }`}
                         >
                             <LuLayoutDashboard size={18} />
                             Admin Dashboard
@@ -43,10 +50,11 @@ export const NavBar = () => {
 
                         <button
                             onClick={() => navigate("/admin/audit")}
-                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-slate-800/40 active:scale-[0.98] transition-all ${location.pathname === "/audit"
-                                ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
-                                : "text-slate-400"
-                                }`}
+                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-slate-800/40 active:scale-[0.98] transition-all ${
+                                location.pathname === "/admin/audit"
+                                    ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
+                                    : "text-slate-400"
+                            }`}
                         >
                             <LuHistory size={18} />
                             Audit Logs
@@ -54,15 +62,16 @@ export const NavBar = () => {
                     </>
                 )}
 
-                {/* 2. INVENTORY MANAGER PANEL LINKS: Only visible if the URL starts with /inventory */}
+                {/* 2. INVENTORY MANAGER PANEL LINKS */}
                 {location.pathname.startsWith("/inventory") && (
                     <>
                         <button
                             onClick={() => navigate("/inventory")}
-                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-blue-500/20 active:scale-[0.98] transition-all ${location.pathname === "/inventory"
-                                ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
-                                : "text-slate-400"
-                                }`}
+                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-blue-500/20 active:scale-[0.98] transition-all ${
+                                location.pathname === "/inventory"
+                                    ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
+                                    : "text-slate-400"
+                            }`}
                         >
                             <LuLayoutDashboard size={18} />
                             Food Inventory
@@ -70,10 +79,11 @@ export const NavBar = () => {
 
                         <button
                             onClick={() => navigate("/inventory/audit")}
-                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-slate-800/40 active:scale-[0.98] transition-all ${location.pathname === "/audit"
-                                ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
-                                : "text-slate-400"
-                                }`}
+                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-slate-800/40 active:scale-[0.98] transition-all ${
+                                location.pathname === "/inventory/audit"
+                                    ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
+                                    : "text-slate-400"
+                            }`}
                         >
                             <LuHistory size={18} />
                             Inventory Logs
@@ -81,14 +91,16 @@ export const NavBar = () => {
                     </>
                 )}
 
+                {/* 3. EMPLOYEE PANEL LINKS */}
                 {location.pathname.startsWith("/employee") && (
                     <>
                         <button
                             onClick={() => navigate("/employee")}
-                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-blue-500/20 active:scale-[0.98] transition-all ${location.pathname === "/inventory"
-                                ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
-                                : "text-slate-400"
-                                }`}
+                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-blue-500/20 active:scale-[0.98] transition-all ${
+                                location.pathname === "/employee"
+                                    ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
+                                    : "text-slate-400"
+                            }`}
                         >
                             <LuLayoutDashboard size={18} />
                             Dashboard
@@ -96,17 +108,17 @@ export const NavBar = () => {
 
                         <button
                             onClick={() => navigate("/employee/audit")}
-                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-slate-800/40 active:scale-[0.98] transition-all ${location.pathname === "/audit"
-                                ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
-                                : "text-slate-400"
-                                }`}
+                            className={`btn btn-ghost w-full justify-start gap-3 px-4 py-3 h-auto min-h-0 text-sm font-medium rounded-r-lg rounded-l-none hover:bg-slate-800/40 active:scale-[0.98] transition-all ${
+                                location.pathname === "/employee/audit"
+                                    ? "text-blue-400 bg-blue-500/10 border-l-4 border-blue-500"
+                                    : "text-slate-400"
+                            }`}
                         >
                             <LuHistory size={18} />
                             Order Logs
                         </button>
                     </>
                 )}
-
             </nav>
 
             <div className="p-4 border-t border-slate-800/60 flex items-center justify-between gap-2">
@@ -123,7 +135,7 @@ export const NavBar = () => {
 
                 {/* Logout Button */}
                 <button
-                    onClick={() => navigate("/")} // 5. Click returns to the login screen
+                    onClick={handleLogout}
                     className="btn btn-ghost btn-xs h-8 min-h-0 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 active:scale-95 transition-all flex items-center gap-1.5 px-2.5 rounded-lg"
                     title="Logout"
                 >

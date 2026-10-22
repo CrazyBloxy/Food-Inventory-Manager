@@ -1,12 +1,17 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import { LoginForm } from "./pages/LoginForm";
 import { EmployeeDashboard } from "./pages/employee/EmployeeDashboard";
-import { AuditLogsView_Employee } from "./pages/employee/AuditView_Employee";
+import { EmployeeAuditLogs } from "./pages/employee/EmployeeAuditLogs";
 import { InventoryDashboard } from "./pages/inventory/InventoryDashboard";
-import { AuditLogsView_Inventory } from "./pages/inventory/AuditView_Inventory"
+import { InventoryAuditLogs } from "./pages/inventory/InventoryAuditLogs"
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
-import { AuditLogsView_Admin } from "./pages/admin/AuditView_Admin";
+import { AdminAuditLogs } from "./pages/admin/AdminAuditLogs";
+
+// Components Page
+import { PublicRoute } from "./components/PublicRoute";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { NotFound } from "./components/NotFound";
 
 import { NavBar } from "./assets/navbar/nav"
 function App() {
@@ -17,13 +22,32 @@ function App() {
       <NavBar />
       <main className="flex-1 w-full overflow-x-hidden">
         <Routes>
-          <Route path="/" element={<LoginForm />} />
-          <Route path="/employee" element={<EmployeeDashboard />} />
-          <Route path="/employee/audit" element={<AuditLogsView_Employee />} />
-          <Route path="/inventory" element={<InventoryDashboard />} />
-          <Route path="/inventory/audit" element={<AuditLogsView_Inventory />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/audit" element={<AuditLogsView_Admin />} />
+          {/* PUBLIC ROUTE */}
+          <Route element={<PublicRoute />}>
+            <Route path="/" element={<LoginForm />} />
+          </Route>
+
+          {/* ADMIN ROUTES */}
+          <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/audit" element={<AdminAuditLogs />} />
+          </Route>
+
+          {/* INVENTORY MANAGER ROUTES */}
+          <Route element={<ProtectedRoute allowedRoles={["Inventory Manager"]} />}>
+            <Route path="/inventory" element={<InventoryDashboard />} />
+            <Route path="/inventory/audit" element={<InventoryAuditLogs />} />
+          </Route>
+
+          {/* EMPLOYEE ROUTES */}
+          <Route element={<ProtectedRoute allowedRoles={["Employee"]} />}>
+            <Route path="/employee" element={<EmployeeDashboard />} />
+            <Route path="/employee/audit" element={<EmployeeAuditLogs />} />
+          </Route>
+
+          {/* Error 404 Pages */}
+          <Route path="/404" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
     </div>

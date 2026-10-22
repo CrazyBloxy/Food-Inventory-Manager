@@ -1,41 +1,26 @@
 import React from "react";
 
-interface AuditLogStructure {
+interface EmployeeAuditLogStructure {
     id: number;
-    user_id: number | null;
     username: string;
-    action_type: "CREATE" | "UPDATE" | "DELETE";
-    target_table: "users" | "inventory" | "orders" | "order_items" | "audit_logs";
+    action_type: "CREATE";
+    target_table: "orders" | "order_items";
     record_id: number;
-    old_value: string | null;
     new_value: string;
     timestamp: string;
 }
 
-export const AuditLogsView_Inventory: React.FC = () => {
-    // Basic static layout mock data mapping exactly to your table parameters
-    const mockLogs: AuditLogStructure[] = [
+export const EmployeeAuditLogs: React.FC = () => {
+
+    const mockEmployeeLogs: EmployeeAuditLogStructure[] = [
         {
-            id: 1,
-            user_id: 1,
-            username: "Nagisa Furukawa",
+            id: 801,
+            username: "staff_member",
             action_type: "CREATE",
             target_table: "orders",
-            record_id: 104,
-            old_value: null,
-            new_value: '{"order": "Milk"}',
-            timestamp: "2026-09-28 01:10:22"
-        },
-        {
-            id: 2,
-            user_id: 2,
-            username: "Kasane Teto",
-            action_type: "UPDATE",
-            target_table: "inventory",
-            record_id: 54,
-            old_value: '{"amount": 12}',
-            new_value: '{"amount": 42}',
-            timestamp: "2026-09-28 01:05:14"
+            record_id: 4001,
+            new_value: '{"order_id": 4001, "item_id": 3, "quantity_taken": 5}',
+            timestamp: "2026-09-28 02:15:40"
         }
     ];
 
@@ -46,8 +31,8 @@ export const AuditLogsView_Inventory: React.FC = () => {
                 {/* HEADER SECTION */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-100">System Audit Logs</h1>
-                        <p className="text-xs text-slate-400 mt-1">Review global system tracking logs and data state changes.</p>
+                        <h1 className="text-2xl font-bold text-slate-100">Order Logs</h1>
+                        <p className="text-xs text-slate-400 mt-1">Review recent session history and generated submission metrics logs.</p>
                     </div>
 
                     <div className="flex items-center gap-3 w-full max-w-md justify-end">
@@ -59,36 +44,31 @@ export const AuditLogsView_Inventory: React.FC = () => {
                     </div>
                 </div>
 
-                {/* SCROLLABLE AUDIT TABLE CONTAINER */}
+                {/* SCROLLABLE TABLE CONTAINER */}
                 <div className="bg-[#0b1326] rounded-2xl shadow-xl h-125 flex flex-col overflow-hidden">
                     <div className="flex-1 overflow-y-auto scrollbar-thin">
                         <table className="table w-full text-slate-300 table-pin-rows">
                             <thead>
                                 <tr className="border-b border-slate-800 bg-[#060b14] text-slate-400 text-xs">
                                     <th className="py-4 px-6">Timestamp</th>
-                                    <th className="py-4 px-6">User (ID)</th>
+                                    <th className="py-4 px-6">Username</th>
                                     <th className="py-4 px-6">Action</th>
                                     <th className="py-4 px-6">Target Table</th>
                                     <th className="py-4 px-6">Record ID</th>
-                                    <th className="py-4 px-6">State Delta (JSON)</th>
+                                    <th className="py-4 px-6">Submission Details</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {mockLogs.map((log) => (
+                                {mockEmployeeLogs.map((log) => (
                                     <tr key={log.id} className="border-b border-slate-800/50 hover:bg-slate-800/10 transition-colors text-sm">
                                         <td className="font-mono text-xs text-slate-400 py-4 px-6 whitespace-nowrap">
                                             {log.timestamp}
                                         </td>
-                                        <td className="py-4 px-6">
-                                            <div className="flex flex-col">
-                                                <span className="font-medium text-slate-200">{log.username}</span>
-                                                <span className="text-[10px] text-slate-500 font-mono">ID: {log.user_id}</span>
-                                            </div>
+                                        <td className="py-4 px-6 font-medium text-slate-200">
+                                            {log.username}
                                         </td>
                                         <td className="py-4 px-6">
-                                            <span className={`text-[11px] font-bold px-2 py-0.5 rounded-md ${
-                                                log.action_type === "CREATE" ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-400"
-                                            }`}>
+                                            <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400">
                                                 {log.action_type}
                                             </span>
                                         </td>
@@ -99,7 +79,7 @@ export const AuditLogsView_Inventory: React.FC = () => {
                                             {log.record_id}
                                         </td>
                                         <td className="py-4 px-6 max-w-xs truncate font-mono text-xs text-slate-400" title={log.new_value}>
-                                            {log.old_value ? `Old: ${log.old_value} → ` : ""}New: {log.new_value}
+                                            New: {log.new_value}
                                         </td>
                                     </tr>
                                 ))}

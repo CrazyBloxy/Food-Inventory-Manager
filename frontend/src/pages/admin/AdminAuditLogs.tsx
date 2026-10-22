@@ -14,7 +14,7 @@ interface AuditLogStructure {
     timestamp: string;
 }
 
-export const AuditLogsView_Admin: React.FC = () => {
+export const AdminAuditLogs: React.FC = () => {
     // Basic mock dataset following your exact database structure rules
     const mockLogs: AuditLogStructure[] = [
         {
