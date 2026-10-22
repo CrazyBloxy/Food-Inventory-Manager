@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from src.db.models import Order, OrderItem
+from src.db.models import Order, OrderItem, InventoryItem
 from src.schemas.schemas import OrderCreate
 
 
@@ -16,7 +16,7 @@ class OrderRepository:
         stmt = (
             select(Order)
             .options(
-                selectinload(Order.order_items).selectinload(OrderItem.item)
+                selectinload(Order.order_items).selectinload(OrderItem.item).selectinload(InventoryItem.category)
             )
             .where(Order.id == order_id)
         )
@@ -28,7 +28,7 @@ class OrderRepository:
         stmt = (
             select(Order)
             .options(
-                selectinload(Order.order_items).selectinload(OrderItem.item)
+                selectinload(Order.order_items).selectinload(OrderItem.item).selectinload(InventoryItem.category)
             )
             .offset(skip)
             .limit(limit)
@@ -51,5 +51,4 @@ class OrderRepository:
             self.db.add(db_order_item)
 
         await self.db.flush()
-        await self.db.refresh(db_order, ["order_items"])
-        return db_order
+        return await self.get_by_id(db_order.id)
