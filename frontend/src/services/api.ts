@@ -10,6 +10,14 @@ const api = axios.create({
   },
 });
 
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token") || localStorage.getItem("access_token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
 export const foodPantryService = {
     // --- Authentication ---
     login: async (credentials: LoginPayload) => {
@@ -55,7 +63,7 @@ export const foodPantryService = {
 
     // --- Categories (Inventory Manager Workflow) ---
     getCategories: async (): Promise<Category[]> => {
-        const response = await api.get("/categories");
+        const response = await api.get("/inventory/categories");
         return response.data.data || response.data;
     },
 
@@ -90,6 +98,11 @@ export const foodPantryService = {
         const response = await api.post("/orders", orderData);
         return response.data;
     },
+
+    getAuditLogs: async (): Promise<any[]> => {
+        const response = await api.get("/audit-logs");
+        return response.data.data || response.data;
+    }
 };
 
 export default api;

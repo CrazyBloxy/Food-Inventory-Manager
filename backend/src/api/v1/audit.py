@@ -6,7 +6,7 @@ from src.api.dependencies import get_current_user, get_db
 from src.db.models import User
 from src.repositories.audit_repo import AuditLogRepository
 
-router = APIRouter(prefix="/audit-logs", tags=["Audit Logs"])
+router = APIRouter(tags=["Audit Logs"])
 
 @router.get("")
 async def get_audit_logs(
