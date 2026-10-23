@@ -1,13 +1,13 @@
 import axios from 'axios';
-import type { User, Category, InventoryItem, Order, OrderCreate, LoginPayload } from '../types';
+import type { User, Category, InventoryItem, Order, LoginPayload } from '../types';
 
 export const API_URL = import.meta.env.VITE_BACKEND_API || "http://127.0.0.1:8000/api/v1";
 
 const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+    baseURL: API_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
 
 api.interceptors.request.use((config) => {
@@ -94,8 +94,8 @@ export const foodPantryService = {
         return response.data.data || response.data;
     },
 
-    createOrder: async (orderData: OrderCreate): Promise<Order> => {
-        const response = await api.post("/orders", orderData);
+    createOrder: async (orderPayload: any, config?: any) => {
+        const response = await api.post("/orders", orderPayload, config);
         return response.data;
     },
 

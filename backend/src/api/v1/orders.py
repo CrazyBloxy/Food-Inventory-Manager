@@ -31,6 +31,8 @@ async def create_order(
     inventory_repo = InventoryRepository(db)
     audit_repo = AuditLogRepository(db)
 
+    audit_items_summary = []
+
     # 1. Validate stock levels for all items in the order before committing
     for item_detail in order_data.items:
         inv_item = await inventory_repo.get_by_id(item_detail.item_id)
@@ -44,6 +46,11 @@ async def create_order(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Insufficient stock for item '{inv_item.item_name}'. Available: {inv_item.amount}, Requested: {item_detail.quantity_taken}"
             )
+
+        audit_items_summary.append({
+            "item_name": inv_item.item_name,
+            "quantity_taken": item_detail.quantity_taken
+        })
 
     # 2. Deduct stock levels and create the order
     for item_detail in order_data.items:
@@ -59,20 +66,10 @@ async def create_order(
         action_type="CREATE_ORDER",
         target_table="orders",
         record_id=new_order.id,
-        new_value={"total_items": len(order_data.items)}
+        new_value={
+            "total_items": len(order_data.items),
+            "items": audit_items_summary
+        }
     )
 
     return new_order
-
-
-@router.get("", response_model=List[OrderResponse])
-async def list_orders(
-    skip: int = 0,
-    limit: int = 100,
-    current_user: User = Depends(require_employee),
-    db: AsyncSession = Depends(get_db)
-):
-    """Retrieve history of distribution orders."""
-    order_repo = OrderRepository(db)
-    orders = await order_repo.get_all(skip=skip, limit=limit)
-    return orders

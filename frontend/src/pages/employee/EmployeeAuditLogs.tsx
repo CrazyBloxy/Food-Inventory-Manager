@@ -109,8 +109,17 @@ export const EmployeeAuditLogs: React.FC = () => {
                                 ) : (
                                     filteredLogs.map((log) => (
                                         <tr key={log.id} className="border-b border-slate-800/50 hover:bg-slate-800/10 transition-colors text-sm">
-                                            <td className="font-mono text-xs text-slate-400 py-4 px-6 whitespace-nowrap">
-                                                {log.timestamp}
+                                            <td className="py-4 px-6 text-xs text-slate-300">
+                                                <div className="font-medium text-slate-100">
+                                                    {new Date(log.timestamp).toLocaleString('en-US', {
+                                                        year: 'numeric',
+                                                        month: 'short',
+                                                        day: 'numeric',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                        hour12: true
+                                                    })}
+                                                </div>
                                             </td>
                                             <td className="py-4 px-6 font-medium text-slate-200">
                                                 <div className="flex flex-col">
@@ -133,8 +142,29 @@ export const EmployeeAuditLogs: React.FC = () => {
                                             <td className="font-mono text-xs text-slate-300 py-4 px-6 font-semibold">
                                                 {log.record_id}
                                             </td>
-                                            <td className="py-4 px-6 max-w-xs truncate font-mono text-xs text-slate-400" title={JSON.stringify(log.new_value)}>
-                                                New: {typeof log.new_value === 'object' && log.new_value !== null ? JSON.stringify(log.new_value) : log.new_value}
+                                            <td
+                                                className="py-4 px-6 max-w-xs font-mono text-xs text-slate-400"
+                                                title={typeof log.new_value === 'string' ? log.new_value : JSON.stringify(log.new_value)}
+                                            >
+                                                {(() => {
+                                                    let val: any = log.new_value;
+
+                                                    if (typeof val === 'string') {
+                                                        try { val = JSON.parse(val); } catch (e) { return log.new_value; }
+                                                    }
+                                                    if (typeof val === 'string') {
+                                                        try { val = JSON.parse(val); } catch (e) { return String(log.new_value); }
+                                                    }
+
+                                                    // Display a clean, friendly summary using whatever total count is available
+                                                    const count = val?.total_items ?? (Array.isArray(val?.items) ? val.items.length : 'some');
+
+                                                    return (
+                                                        <div className="text-slate-200 font-sans text-xs">
+                                                            <span className="font-semibold text-blue-400">Placed an order:</span> Taken {count} Inventory Product(s)
+                                                        </div>
+                                                    );
+                                                })()}
                                             </td>
                                         </tr>
                                     ))

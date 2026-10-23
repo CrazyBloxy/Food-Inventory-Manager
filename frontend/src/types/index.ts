@@ -31,10 +31,6 @@ export interface OrderItemCreate {
     quantity_taken: number;
 }
 
-export interface OrderCreate {
-    items: OrderItemCreate[];
-}
-
 export interface OrderItem {
     id: number;
     item_id: number;

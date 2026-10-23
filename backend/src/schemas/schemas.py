@@ -82,6 +82,7 @@ class OrderItemCreate(BaseModel):
     quantity_taken: int = Field(gt=0, description="Quantity must be greater than 0")
 
 class OrderCreate(BaseModel):
+    pin: str 
     items: List[OrderItemCreate]
 
 class OrderItemResponse(BaseModel):

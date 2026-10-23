@@ -23,19 +23,6 @@ class OrderRepository:
         result = await self.db.execute(stmt)
         return result.scalar_one_or_none()
 
-    async def get_all(self, skip: int = 0, limit: int = 100) -> Sequence[Order]:
-        """Retrieve a paginated list of all pantry distribution orders."""
-        stmt = (
-            select(Order)
-            .options(
-                selectinload(Order.order_items).selectinload(OrderItem.item).selectinload(InventoryItem.category)
-            )
-            .offset(skip)
-            .limit(limit)
-        )
-        result = await self.db.execute(stmt)
-        return result.scalars().all()
-
     async def create(self, user_id: int, order_data: OrderCreate) -> Order:
         """Create a new order header and insert all associated line items."""
         db_order = Order(user_id=user_id)
