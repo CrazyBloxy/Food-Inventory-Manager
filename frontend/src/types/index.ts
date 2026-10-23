@@ -55,3 +55,14 @@ export interface LoginPayload {
     password?: string;
     pin?: string;
 }
+
+export interface EmployeeAuditLogStructure {
+    id: number;
+    user_id: number;
+    user_role: string;
+    action_type: "CREATE" | "UPDATE" | "DELETE";
+    target_table: "orders" | "order_items";
+    record_id: number;
+    new_value: string;
+    timestamp: string;
+}

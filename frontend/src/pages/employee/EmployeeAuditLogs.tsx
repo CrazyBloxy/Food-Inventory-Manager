@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { LuShieldAlert, LuSearch, LuRefreshCw } from "react-icons/lu";
 import { foodPantryService } from "../../services/api";
-
-interface EmployeeAuditLogStructure {
-    id: number;
-    user_id: number;
-    user_role: string;
-    action_type: "CREATE" | "UPDATE" | "DELETE";
-    target_table: "orders" | "order_items";
-    record_id: number;
-    new_value: string;
-    timestamp: string;
-}
+import type { EmployeeAuditLogStructure } from "../../types";
 
 export const EmployeeAuditLogs: React.FC = () => {
     const [logs, setLogs] = useState<EmployeeAuditLogStructure[]>([]);
