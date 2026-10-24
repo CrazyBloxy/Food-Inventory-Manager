@@ -14,7 +14,7 @@ export const NavBar = () => {
     
     const handleLogout = () => {
         localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        localStorage.removeItem("role");
         console.log("User logged out successfully.");
         navigate("/");
     };

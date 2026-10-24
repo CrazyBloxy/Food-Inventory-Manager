@@ -15,16 +15,20 @@ export const LoginForm = () => {
         setError("");
         setLoading(true);
 
+        // 1. Clear any stale session data immediately so old roles don't linger on failure
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+
         try {
             const response = await foodPantryService.login({ username, password });
-            
-            // Save the token
+
+            // Save the new token
             if (response.access_token) {
                 localStorage.setItem("token", response.access_token);
             }
 
-            // Save the role returned by your login response (adjust key if your backend names it differently, e.g. response.role)
-            const userRole = response.role || response.user?.role || "Employee";
+            // Save the new role returned by your login response
+            const userRole = response.role_name || response.role?.role_name || response.role || response.user?.role || "Employee";
             localStorage.setItem("role", userRole);
 
             // Route based on role
