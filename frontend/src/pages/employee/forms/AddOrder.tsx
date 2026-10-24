@@ -367,7 +367,6 @@ export const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, o
                         </div>
                     </div>
                 )}
-
             </div>
         </div>
     );

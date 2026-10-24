@@ -73,18 +73,33 @@ export const foodPantryService = {
         return response.data.data || response.data;
     },
 
-    createInventoryItem: async (itemData: { item_name: string; amount: number; category_id: number; expiration_date: string }) => {
-        const response = await api.post("/inventory", itemData);
+    createInventoryItem: async (
+        itemData: { item_name: string; amount: number; category_id: number; expiration_date: string },
+        pin: string
+    ) => {
+        const response = await api.post("/inventory", itemData, {
+            headers: {
+                'x-pin': pin,
+            },
+        });
         return response.data;
     },
 
-    updateInventoryItem: async (itemId: number, itemData: Partial<InventoryItem>) => {
-        const response = await api.put(`/inventory/${itemId}`, itemData);
+    updateInventoryItem: async (itemId: number, itemData: Partial<InventoryItem>, pin: string) => {
+        const response = await api.put(`/inventory/${itemId}`, itemData, {
+            headers: {
+                'x-pin': pin,
+            },
+        });
         return response.data;
     },
 
-    deleteInventoryItem: async (itemId: number) => {
-        const response = await api.delete(`/inventory/${itemId}`);
+    deleteInventoryItem: async (itemId: number, pin: string) => {
+        const response = await api.delete(`/inventory/${itemId}`, {
+            headers: {
+                'x-pin': pin,
+            },
+        });
         return response.data;
     },
 

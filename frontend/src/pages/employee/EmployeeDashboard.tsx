@@ -8,6 +8,7 @@ export const EmployeeDashboard: React.FC = () => {
     const [inventory, setInventory] = useState<InventoryItem[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState<string>("all");
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [openOrderModal, setOpenOrderModal] = useState<boolean>(false);
@@ -38,32 +39,30 @@ export const EmployeeDashboard: React.FC = () => {
         fetchData();
     }, []);
 
-    // Helper to resolve category name whether it's an object, ID, or string
-    const getCategoryName = (categoryField: any): string => {
-        if (!categoryField) return "Uncategorized";
-        
-        // If category is already an expanded object
-        if (typeof categoryField === 'object' && categoryField !== null) {
-            return categoryField.category_name || (categoryField as any).name || "Uncategorized";
+    // Helper to resolve category name from category_id or category relation
+    const getCategoryName = (item: InventoryItem): string => {
+        if (item.category?.category_name) {
+            return item.category.category_name;
         }
-        
-        // If category is an ID reference, look it up in the categories list
-        const matched = categories.find((cat: any) => cat.id === Number(categoryField) || cat === categoryField);
-        if (matched) {
-            return matched.category_name || (matched as any).name || String(matched);
-        }
-        
-        return String(categoryField);
+        const found = categories.find((c) => c.id === item.category_id);
+        return found ? found.category_name : "Uncategorized";
     };
 
-    // Filter stock inventory safely based on search input
+    // Filter stock inventory safely based on search input and category filter dropdown
     const filteredInventory = inventory.filter((item) => {
-        const catName = getCategoryName(item.category);
-        return (
-            (item.item_name?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
-            catName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            String(item.amount).includes(searchTerm)
-        );
+        const query = searchTerm.toLowerCase();
+        const catName = getCategoryName(item).toLowerCase();
+
+        const matchesSearch =
+            String(item.id).includes(query) ||
+            (item.item_name?.toLowerCase() || "").includes(query) ||
+            catName.includes(query) ||
+            String(item.amount).includes(query);
+
+        const matchesCategory =
+            selectedCategory === "all" || String(item.category_id) === selectedCategory;
+
+        return matchesSearch && matchesCategory;
     });
 
     return (
@@ -77,7 +76,21 @@ export const EmployeeDashboard: React.FC = () => {
                         <p className="text-xs text-slate-400 mt-1">View available kitchen stocks and compile requisition orders.</p>
                     </div>
 
-                    <div className="flex items-center gap-3 w-full max-w-md justify-end">
+                    <div className="flex items-center gap-3 w-full max-w-xl justify-end">
+                        {/* Category Filter Dropdown */}
+                        <select
+                            value={selectedCategory}
+                            onChange={(e) => setSelectedCategory(e.target.value)}
+                            className="select bg-[#0a1224] border border-slate-800 rounded-xl text-sm h-11 text-slate-300 px-3 focus:outline-none focus:border-blue-500 transition-colors"
+                        >
+                            <option value="all">All Categories</option>
+                            {categories.map((cat) => (
+                                <option key={cat.id} value={String(cat.id)}>
+                                    {cat.category_name}
+                                </option>
+                            ))}
+                        </select>
+
                         <div className="relative w-full">
                             <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-500">
                                 <LuSearch size={16} />
@@ -87,19 +100,21 @@ export const EmployeeDashboard: React.FC = () => {
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 placeholder="Filter Stock by name, category..."
-                                className="input w-full bg-[#0a1224] border border-slate-800 rounded-xl text-sm h-11 text-slate-200 pl-10 pr-4 focus:outline-none focus:border-blue-600 transition-colors"
+                                className="input w-full bg-[#0a1224] border border-slate-800 rounded-xl text-sm h-11 text-slate-200 pl-10 pr-4 focus:outline-none focus:border-blue-500 transition-colors"
                             />
                         </div>
+
                         <button 
                             onClick={fetchData}
-                            className="btn bg-[#0a1224] hover:bg-slate-800 border border-slate-800 text-slate-300 h-11 min-h-0 px-4 rounded-xl"
+                            className="btn bg-[#0a1224] hover:bg-slate-800 border border-slate-800 text-slate-300 h-11 min-h-0 px-4 rounded-xl flex items-center justify-center shrink-0 transition-colors"
                             title="Refresh stock inventory"
                         >
-                            <LuRefreshCw size={16} className={loading ? "animate-spin" : ""} />
+                            <LuRefreshCw size={16} className={loading ? "animate-spin text-blue-400" : ""} />
                         </button>
+
                         <button 
                             onClick={() => setOpenOrderModal(true)} 
-                            className="btn btn-primary h-11 min-h-0 rounded-xl font-medium text-sm border-none px-5 whitespace-nowrap"
+                            className="btn btn-primary h-11 min-h-0 rounded-xl font-medium text-sm border-none px-5 whitespace-nowrap shrink-0"
                         >
                            + Create Order
                         </button>
@@ -115,7 +130,7 @@ export const EmployeeDashboard: React.FC = () => {
                 )}
 
                 {/* INVENTORY TABLE WORKSPACE */}
-                <div className="bg-[#0b1326] rounded-2xl shadow-xl h-125 flex flex-col overflow-hidden border border-slate-800/60">
+                <div className="bg-[#0b1326] rounded-2xl shadow-xl h-125 flex flex-col overflow-hidden border border-slate-800/80">
                     <div className="flex-1 overflow-y-auto scrollbar-thin">
                         <table className="table w-full text-slate-300 table-pin-rows">
                             <thead>
@@ -130,30 +145,38 @@ export const EmployeeDashboard: React.FC = () => {
                             <tbody>
                                 {loading ? (
                                     <tr>
-                                        <td colSpan={5} className="text-center py-20 text-slate-500">
+                                        <td colSpan={5} className="text-center py-20 text-slate-500 text-sm">
                                             Loading inventory stocks...
                                         </td>
                                     </tr>
                                 ) : filteredInventory.length === 0 ? (
                                     <tr>
-                                        <td colSpan={5} className="text-center py-20 text-slate-500">
+                                        <td colSpan={5} className="text-center py-20 text-slate-500 text-sm">
                                             No matching inventory items found.
                                         </td>
                                     </tr>
                                 ) : (
                                     filteredInventory.map((item) => (
                                         <tr key={item.id} className="border-b border-slate-800/50 hover:bg-slate-800/10 transition-colors">
-                                            <td className="font-mono text-xs text-blue-400 py-4 px-6">#{String(item.id).padStart(4, '0')}</td>
-                                            <td className="py-4 px-6 font-medium text-slate-100">{item.item_name}</td>
+                                            <td className="font-mono text-xs text-blue-400 py-4 px-6">
+                                                #{String(item.id).padStart(4, '0')}
+                                            </td>
+                                            <td className="py-4 px-6 font-medium text-slate-100">
+                                                {item.item_name}
+                                            </td>
                                             <td className="py-4 px-6 text-xs text-slate-400">
-                                                {getCategoryName(item.category)}
+                                                <span className="bg-slate-800/60 border border-slate-700/50 px-2.5 py-1 rounded-md text-slate-300">
+                                                    {getCategoryName(item)}
+                                                </span>
                                             </td>
                                             <td className="py-4 px-6">
-                                                <span className={`text-sm font-semibold ${item.amount === 0 ? "text-error" : "text-slate-200"}`}>
+                                                <span className={`text-sm font-semibold ${item.amount === 0 ? "text-rose-400" : "text-slate-200"}`}>
                                                     {item.amount} units
                                                 </span>
                                             </td>
-                                            <td className="font-mono text-xs py-4 px-6 text-slate-400">{item.expiration_date}</td>
+                                            <td className="font-mono text-xs py-4 px-6 text-slate-400">
+                                                {item.expiration_date}
+                                            </td>
                                         </tr>
                                     ))
                                 )}
@@ -164,7 +187,11 @@ export const EmployeeDashboard: React.FC = () => {
             </main>
 
             {/* FULL SCREEN REQUISITION WORKSPACE */}
-            <AddOrderModal isOpen={openOrderModal} onClose={() => setOpenOrderModal(false)} />
+            <AddOrderModal 
+                isOpen={openOrderModal} 
+                onClose={() => setOpenOrderModal(false)} 
+                onOrderSuccess={fetchData}
+            />
         </div>
     );
 };
