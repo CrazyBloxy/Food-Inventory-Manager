@@ -46,18 +46,30 @@ export const foodPantryService = {
         return response.data.data || response.data;
     },
 
-    createUser: async (userData: { username: string; password?: string; pin?: string; role_id: number }) => {
-        const response = await api.post("/users", userData);
+    createUser: async (userData: { username: string; password?: string; pin?: string; role_id: number }, adminPin: string) => {
+        const response = await api.post("/users", userData, {
+            headers: {
+                'x-pin': adminPin,
+            },
+        });
         return response.data;
     },
 
-    updateUser: async (userId: number, userData: Partial<User>) => {
-        const response = await api.put(`/users/${userId}`, userData);
+    updateUser: async (userId: number, userData: Partial<User>, pin: string) => {
+        const response = await api.put(`/users/${userId}`, userData, {
+            headers: {
+                'x-pin': pin,
+            },
+        });
         return response.data;
     },
 
-    deleteUser: async (userId: number) => {
-        const response = await api.delete(`/users/${userId}`);
+    deleteUser: async (userId: number, pin: string) => {
+        const response = await api.delete(`/users/${userId}`, {
+            headers: {
+                'x-pin': pin,
+            },
+        });
         return response.data;
     },
 
