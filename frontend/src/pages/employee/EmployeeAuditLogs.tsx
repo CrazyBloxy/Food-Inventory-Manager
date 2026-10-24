@@ -1,10 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { LuShieldAlert, LuSearch, LuRefreshCw } from "react-icons/lu";
 import { foodPantryService } from "../../services/api";
-import type { EmployeeAuditLogStructure } from "../../types";
+import type { UniversalAuditLog } from "../../types";
+
+// 1. Put the helper function cleanly outside the component
+const renderSubmissionDetails = (newValue: any): React.ReactNode => {
+    if (!newValue) return <span className="text-slate-500">—</span>;
+
+    let val = newValue;
+
+    // Handle nested or stringified JSON if any slip through
+    if (typeof val === 'string') {
+        try { 
+            val = JSON.parse(val); 
+        } catch { 
+            return <span className="text-slate-300 font-sans text-xs">{newValue}</span>; 
+        }
+    }
+    if (typeof val === 'string') {
+        try { 
+            val = JSON.parse(val); 
+        } catch { 
+            return <span className="text-slate-300 font-sans text-xs">{String(newValue)}</span>; 
+        }
+    }
+
+    // Safely figure out the item count or structure
+    const count = val?.total_items ?? (Array.isArray(val?.items) ? val.items.length : 'some');
+
+    return (
+        <div className="text-slate-200 font-sans text-xs">
+            <span className="font-semibold text-blue-400">Placed an order:</span> Taken {count} Inventory Product(s)
+        </div>
+    );
+};
 
 export const EmployeeAuditLogs: React.FC = () => {
-    const [logs, setLogs] = useState<EmployeeAuditLogStructure[]>([]);
+    const [logs, setLogs] = useState<UniversalAuditLog[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -146,25 +178,8 @@ export const EmployeeAuditLogs: React.FC = () => {
                                                 className="py-4 px-6 max-w-xs font-mono text-xs text-slate-400"
                                                 title={typeof log.new_value === 'string' ? log.new_value : JSON.stringify(log.new_value)}
                                             >
-                                                {(() => {
-                                                    let val: any = log.new_value;
-
-                                                    if (typeof val === 'string') {
-                                                        try { val = JSON.parse(val); } catch (e) { return log.new_value; }
-                                                    }
-                                                    if (typeof val === 'string') {
-                                                        try { val = JSON.parse(val); } catch (e) { return String(log.new_value); }
-                                                    }
-
-                                                    // Display a clean, friendly summary using whatever total count is available
-                                                    const count = val?.total_items ?? (Array.isArray(val?.items) ? val.items.length : 'some');
-
-                                                    return (
-                                                        <div className="text-slate-200 font-sans text-xs">
-                                                            <span className="font-semibold text-blue-400">Placed an order:</span> Taken {count} Inventory Product(s)
-                                                        </div>
-                                                    );
-                                                })()}
+                                                {/* 2. Simply call the helper function here! */}
+                                                {renderSubmissionDetails(log.new_value)}
                                             </td>
                                         </tr>
                                     ))

@@ -52,13 +52,15 @@ export interface LoginPayload {
     pin?: string;
 }
 
-export interface EmployeeAuditLogStructure {
+export interface UniversalAuditLog {
     id: number;
-    user_id: number;
-    user_role: string;
+    user_id: number | null;
+    username?: string;
+    user_role?: string;
     action_type: "CREATE" | "UPDATE" | "DELETE";
-    target_table: "orders" | "order_items";
+    target_table: "users" | "inventory" | "orders" | "order_items";
     record_id: number;
-    new_value: string;
+    old_value: string | Record<string, any> | null;
+    new_value: string | Record<string, any>;
     timestamp: string;
 }

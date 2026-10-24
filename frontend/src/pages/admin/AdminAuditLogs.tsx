@@ -9,7 +9,7 @@ interface AuditLogStructure {
     action_type: "CREATE" | "UPDATE" | "DELETE" | "LOGIN_SUCCESS" | "STOCK_OVERFLOW";
     target_table: "users" | "inventory" | "orders" | "order_items";
     record_id: number;
-    old_value: string | null; // Placeholder string version for basic frontend layout
+    old_value: string | null; 
     new_value: string;
     timestamp: string;
 }
