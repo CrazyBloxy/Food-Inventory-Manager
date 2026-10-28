@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+import os
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.api.v1 import auth, inventory, orders, users, audit
@@ -24,6 +25,13 @@ async def root_health_check():
         "system": "Food Pantry & Inventory Manager",
         "documentation": "/docs"
     }
+
+@app.post("/api/v1/shutdown")
+async def shutdown_system():
+    try:
+        os._exit(0)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 app.include_router(auth.router, prefix="/api/v1/auth", tags=["Authentication"])
 app.include_router(inventory.router, prefix="/api/v1/inventory", tags=["Inventory"])

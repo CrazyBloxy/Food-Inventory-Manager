@@ -129,6 +129,11 @@ export const foodPantryService = {
     getAuditLogs: async (): Promise<any[]> => {
         const response = await api.get("/audit-logs");
         return response.data.data || response.data;
+    },
+
+    shutdown: async () => {
+        const response = await api.post("/shutdown");
+        return response.data;
     }
 };
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { foodPantryService } from "../services/api";
-import { FaUser, FaLock } from "react-icons/fa";
+import { FaUser, FaLock, FaPowerOff } from "react-icons/fa";
 
 export const LoginForm = () => {
     const navigate = useNavigate();
@@ -9,13 +9,14 @@ export const LoginForm = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [isTerminated, setIsTerminated] = useState(false);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
         setLoading(true);
 
-        // 1. Clear any stale session data immediately so old roles don't linger on failure
+        // Clear any stale session data immediately so old roles don't linger on failure
         localStorage.removeItem("token");
         localStorage.removeItem("role");
 
@@ -48,8 +49,51 @@ export const LoginForm = () => {
         }
     };
 
+    // Handler to terminate backend server and clean up frontend session
+    const handleSystemTermination = async () => {
+        if (!window.confirm("Are you sure you want to shut down the system and close the application?")) {
+            return;
+        }
+
+        try {
+            localStorage.clear();
+            sessionStorage.clear();
+            setIsTerminated(true);
+
+            await foodPantryService.shutdown();
+        } catch (err) {
+            console.error("Shutdown signal sent", err);
+        } finally {
+            window.close();
+            
+            setTimeout(() => {
+                window.location.href = "about:blank";
+            }, 500);
+        }
+    };
+
+    if (isTerminated) {
+        return (
+            <div className="flex flex-col justify-center items-center min-h-screen bg-[#050811] text-slate-100 gap-3">
+                <FaPowerOff size={48} className="text-rose-500 animate-pulse" />
+                <h1 className="text-2xl font-bold text-white">System Terminated</h1>
+                <p className="text-xs text-slate-400">The backend server and frontend session have been closed. You may now close this tab.</p>
+            </div>
+        );
+    }
+
     return (
-        <div className="flex justify-center items-center min-h-screen bg-[#050811] text-slate-100">
+        <div className="relative flex justify-center items-center min-h-screen bg-[#050811] text-slate-100">
+            {/* TERMINATION BUTTON */}
+            <button
+                onClick={handleSystemTermination}
+                className="absolute top-6 left-6 flex items-center gap-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 px-4 py-2.5 rounded-xl text-xs font-semibold transition-colors shadow-lg cursor-pointer"
+                title="Terminate Backend and Close App"
+            >
+                <FaPowerOff size={14} />
+                <span>Shutdown System</span>
+            </button>
+
             <form onSubmit={handleLogin} className="fieldset bg-[#0b101d] border-slate-800 rounded-box w-80 border p-6 space-y-4 shadow-xl">
                 <h2 className="text-xl font-bold text-center mb-2 text-white">Food Inventory Login</h2>
 
