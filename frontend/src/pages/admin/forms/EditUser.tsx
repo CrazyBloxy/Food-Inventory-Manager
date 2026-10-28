@@ -62,7 +62,7 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({
         setShowPinModal(true);
     };
 
-    // Step 2: Verify Admin PIN & Execute PUT Request to Update User
+    // Verify PIN & Execute 
     const handleFinalizeEdit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (adminPin.length !== 4) {

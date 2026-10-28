@@ -11,10 +11,7 @@ class InventoryRepository:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    # -------------------------------------------------------------------
     # CATEGORY OPERATIONS
-    # -------------------------------------------------------------------
-
     async def get_all_categories(self) -> Sequence[Category]:
         """Retrieve all available inventory categories."""
         stmt = select(Category)
@@ -27,10 +24,7 @@ class InventoryRepository:
         result = await self.db.execute(stmt)
         return result.scalar_one_or_none()
 
-    # -------------------------------------------------------------------
     # INVENTORY OPERATIONS
-    # -------------------------------------------------------------------
-
     async def get_by_id(self, item_id: int) -> Optional[InventoryItem]:
         """Fetch a single inventory item by ID, eagerly loading its category."""
         stmt = (

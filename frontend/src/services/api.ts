@@ -19,7 +19,7 @@ api.interceptors.request.use((config) => {
 });
 
 export const foodPantryService = {
-    // --- Authentication ---
+    // Authentication
     login: async (credentials: LoginPayload) => {
         const params = new URLSearchParams();
         params.append('username', credentials.username);
@@ -36,11 +36,11 @@ export const foodPantryService = {
     },
 
     getCurrentUser: async (): Promise<User> => {
-        const response = await api.get("/users/me"); // Adjust endpoint if your backend uses something else like "/profile"
+        const response = await api.get("/users/me");
         return response.data;
     },
 
-    // --- Users (Admin Workflow) ---
+    // Users (Admin Workflow)
     getUsers: async (): Promise<User[]> => {
         const response = await api.get("/users");
         return response.data.data || response.data;
@@ -73,13 +73,13 @@ export const foodPantryService = {
         return response.data;
     },
 
-    // --- Categories (Inventory Manager Workflow) ---
+    // Categories (Inventory Manager Workflow)
     getCategories: async (): Promise<Category[]> => {
         const response = await api.get("/inventory/categories");
         return response.data.data || response.data;
     },
 
-    // --- Inventory Management ---
+    // Inventory Management
     getInventory: async (): Promise<InventoryItem[]> => {
         const response = await api.get("/inventory");
         return response.data.data || response.data;
@@ -115,7 +115,7 @@ export const foodPantryService = {
         return response.data;
     },
 
-    // --- Orders & Distribution (Employee Workflow) ---
+    // Orders & Distribution (Employee Workflow)
     getOrders: async (): Promise<Order[]> => {
         const response = await api.get("/orders");
         return response.data.data || response.data;

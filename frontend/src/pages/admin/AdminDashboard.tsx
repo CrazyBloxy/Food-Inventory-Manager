@@ -16,7 +16,6 @@ export const AdminDashboard: React.FC = () => {
     const [activeModal, setActiveModal] = useState<"add" | "edit" | null>(null);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-    // Delete workflow state (Step 1: "Are you sure?" + No, Step 2: PIN modal)
     const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
     const [showPinModal, setShowPinModal] = useState(false);
     const [userPendingDelete, setUserPendingDelete] = useState<User | null>(null);
@@ -46,7 +45,7 @@ export const AdminDashboard: React.FC = () => {
         fetchUsers();
     }, []);
 
-    // Helper to safely render user role whether it's a string or a nested object (fixes [object Object])
+    // Safely render user role whether it's a string or a nested object
     const renderUserRole = (role: any): string => {
         if (!role) return "N/A";
         if (typeof role === 'string') return role;
@@ -56,7 +55,6 @@ export const AdminDashboard: React.FC = () => {
         return String(role);
     };
 
-    // Step 1: First click activates the "Are you sure?" confirmation state
     const handleDeleteClick = (user: User) => {
         setDeleteConfirmId(user.id);
     };
@@ -70,7 +68,7 @@ export const AdminDashboard: React.FC = () => {
         setDeleteConfirmId(null);
     };
 
-    // Step 2: Verify PIN & Execute DELETE Request
+    // Verify PIN & Execute 
     const handleFinalizeDelete = async (e: React.FormEvent) => {
         e.preventDefault();
         if (pin.length !== 4) {
@@ -168,7 +166,7 @@ export const AdminDashboard: React.FC = () => {
                     </div>
                 )}
 
-                {/* USER GRID TABLE CONTAINER */}
+                {/* TABLE CONTAINER */}
                 <div className="bg-[#0b1326] rounded-2xl shadow-xl h-125 flex flex-col overflow-hidden border border-slate-800/80">
                     <div className="flex-1 overflow-y-auto scrollbar-thin">
                         {loading ? (
@@ -258,7 +256,7 @@ export const AdminDashboard: React.FC = () => {
                 </div>
             </main>
 
-            {/* 4-PIN VERIFICATION OVERLAY SUB-MODAL */}
+            {/* 4-PIN VERIFICATION OVERLAY MODAL */}
             {showPinModal && (
                 <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
                     <div className="bg-[#0b1326] border border-slate-700/80 w-full max-w-sm rounded-2xl p-6 shadow-2xl flex flex-col items-center text-center relative animate-in fade-in zoom-in duration-150">

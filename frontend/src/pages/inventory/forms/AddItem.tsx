@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { foodPantryService } from "../../../services/api"; // Adjust path if needed based on your file structure
+import { foodPantryService } from "../../../services/api";
 import { LuLock, LuX, LuShieldAlert } from "react-icons/lu";
 import type { Category } from "../../../types";
 
@@ -45,7 +45,7 @@ export const AddItemModal: React.FC<AddInventoryModalProps> = ({
 
     if (!isOpen) return null;
 
-    // Step 1: Validate form values and trigger PIN Modal overlay
+    // Validate form values and trigger PIN Modal overlay
     const handleInitialSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         
@@ -60,7 +60,7 @@ export const AddItemModal: React.FC<AddInventoryModalProps> = ({
         setShowPinModal(true);
     };
 
-    // Step 2: Verify PIN & Execute POST Request to Create Item
+    // Verify PIN & Execute 
     const handleFinalizeAdd = async (e: React.FormEvent) => {
         e.preventDefault();
         if (pin.length !== 4) {
@@ -79,7 +79,6 @@ export const AddItemModal: React.FC<AddInventoryModalProps> = ({
         };
 
         try {
-            // Pass the pin through request headers if your backend expects x-pin header
             await foodPantryService.createInventoryItem(payload, pin);
 
             if (onSuccess) onSuccess();
@@ -185,7 +184,7 @@ export const AddItemModal: React.FC<AddInventoryModalProps> = ({
                     </div>
                 </form>
 
-                {/* 4-PIN VERIFICATION OVERLAY SUB-MODAL */}
+                {/* 4-PIN VERIFICATION OVERLAY MODAL */}
                 {showPinModal && (
                     <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-sm rounded-2xl flex items-center justify-center p-4">
                         <div className="bg-[#0b1326] border border-slate-700/80 w-full max-w-sm rounded-2xl p-6 shadow-2xl flex flex-col items-center text-center relative animate-in fade-in zoom-in duration-150">

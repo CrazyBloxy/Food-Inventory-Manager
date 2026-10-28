@@ -42,7 +42,7 @@ class AuditLogRepository:
         """Fetch audit logs filtered by target user roles. If allowed_roles is None, returns all logs."""
         stmt = select(AuditLog).order_by(AuditLog.timestamp.desc())
         
-        # Filter logs matching only specific user roles (e.g., ['Employee'] or ['Inventory Manager'])
+        # Filter logs matching only specific user roles
         if allowed_roles:
             stmt = stmt.where(AuditLog.user_role.in_(allowed_roles))
             

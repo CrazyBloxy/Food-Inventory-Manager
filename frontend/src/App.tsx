@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
+// Pages
 import { LoginForm } from "./pages/LoginForm";
 import { EmployeeDashboard } from "./pages/employee/EmployeeDashboard";
 import { EmployeeAuditLogs } from "./pages/employee/EmployeeAuditLogs";
@@ -13,6 +14,7 @@ import { PublicRoute } from "./components/PublicRoute";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { NotFound } from "./components/NotFound";
 
+// Navigation Bar
 import { NavBar } from "./assets/navbar/nav"
 function App() {
 

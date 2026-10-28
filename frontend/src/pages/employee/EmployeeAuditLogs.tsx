@@ -3,7 +3,6 @@ import { LuShieldAlert, LuSearch, LuRefreshCw } from "react-icons/lu";
 import { foodPantryService } from "../../services/api";
 import type { UniversalAuditLog } from "../../types";
 
-// 1. Put the helper function cleanly outside the component
 const renderSubmissionDetails = (newValue: any): React.ReactNode => {
     if (!newValue) return <span className="text-slate-500">—</span>;
 
@@ -25,7 +24,6 @@ const renderSubmissionDetails = (newValue: any): React.ReactNode => {
         }
     }
 
-    // Safely figure out the item count or structure
     const count = val?.total_items ?? (Array.isArray(val?.items) ? val.items.length : 'some');
 
     return (
@@ -111,7 +109,7 @@ export const EmployeeAuditLogs: React.FC = () => {
                     </div>
                 )}
 
-                {/* SCROLLABLE TABLE CONTAINER */}
+                {/* TABLE CONTAINER */}
                 <div className="bg-[#0b1326] rounded-2xl shadow-xl h-125 flex flex-col overflow-hidden border border-slate-800/60">
                     <div className="flex-1 overflow-y-auto scrollbar-thin">
                         <table className="table w-full text-slate-300 table-pin-rows">
@@ -178,7 +176,6 @@ export const EmployeeAuditLogs: React.FC = () => {
                                                 className="py-4 px-6 max-w-xs font-mono text-xs text-slate-400"
                                                 title={typeof log.new_value === 'string' ? log.new_value : JSON.stringify(log.new_value)}
                                             >
-                                                {/* 2. Simply call the helper function here! */}
                                                 {renderSubmissionDetails(log.new_value)}
                                             </td>
                                         </tr>

@@ -16,7 +16,6 @@ export const InventoryDashboard: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Delete workflow state (Step 1: "Are you sure?" + No, Step 2: PIN modal)
     const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null);
     const [showPinModal, setShowPinModal] = useState(false);
     const [itemPendingDelete, setItemPendingDelete] = useState<InventoryItem | null>(null);
@@ -60,7 +59,7 @@ export const InventoryDashboard: React.FC = () => {
         return found ? found.category_name : `Category #${item.category_id}`;
     };
 
-    // Step 1: First click activates the "Are you sure?" confirmation state
+    // First click activates the "Are you sure?" confirmation state
     const handleDeleteClick = (item: InventoryItem) => {
         setDeleteConfirmId(item.id);
     };
@@ -74,7 +73,7 @@ export const InventoryDashboard: React.FC = () => {
         setDeleteConfirmId(null);
     };
 
-    // Step 2: Verify PIN & Execute DELETE Request
+    // Verify PIN & Execute 
     const handleFinalizeDelete = async (e: React.FormEvent) => {
         e.preventDefault();
         if (pin.length !== 4) {
@@ -130,7 +129,6 @@ export const InventoryDashboard: React.FC = () => {
         <div className="w-full">
             <main className="p-8 flex flex-col gap-6 max-w-5xl mx-auto w-full">
 
-                {/* HEADER SECTION */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-bold text-slate-100">Food Inventory Manager</h1>
@@ -189,7 +187,6 @@ export const InventoryDashboard: React.FC = () => {
                     </div>
                 )}
 
-                {/* SCROLLABLE TABLE CONTAINER */}
                 <div className="bg-[#0b1326] rounded-2xl shadow-xl h-125 flex flex-col overflow-hidden border border-slate-800/80">
                     <div className="flex-1 overflow-y-auto scrollbar-thin">
                         {loading ? (

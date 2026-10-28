@@ -3,7 +3,7 @@ from datetime import datetime, date
 from typing import Optional, List
 
 
-# 1. ROLES & USERS SCHEMAS
+# ROLES & USERS SCHEMAS
 class RoleResponse(BaseModel):
     id: int
     role_name: str
@@ -45,7 +45,7 @@ class TokenResponse(BaseModel):
     user: UserResponse
 
 
-# 2. CATEGORIES & INVENTORY SCHEMAS
+# CATEGORIES & INVENTORY SCHEMAS
 class CategoryResponse(BaseModel):
     id: int
     category_name: str
@@ -76,7 +76,7 @@ class InventoryResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-# 3. ORDERS & ORDER ITEMS SCHEMAS
+# ORDERS & ORDER ITEMS SCHEMAS
 class OrderItemCreate(BaseModel):
     item_id: int
     quantity_taken: int = Field(gt=0, description="Quantity must be greater than 0")

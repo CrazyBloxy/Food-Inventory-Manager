@@ -62,7 +62,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({
         setShowPinModal(true);
     };
 
-    // Step 2: Verify Admin PIN & Execute POST Request to Create User
+    // Verify PIN & Execute 
     const handleFinalizeAdd = async (e: React.FormEvent) => {
         e.preventDefault();
         if (adminPin.length !== 4) {

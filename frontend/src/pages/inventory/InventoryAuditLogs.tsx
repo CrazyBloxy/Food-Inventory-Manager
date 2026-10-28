@@ -29,7 +29,6 @@ export const InventoryAuditLogs: React.FC = () => {
         fetchAuditLogs();
     }, []);
 
-    // Helper to format ISO timestamps cleanly
     const formatTimestamp = (dateStr: string) => {
         try {
             return new Intl.DateTimeFormat("en-US", {
@@ -41,13 +40,12 @@ export const InventoryAuditLogs: React.FC = () => {
         }
     };
 
-    // Helper to render human-readable State Delta (handling JSONB objects or stringified JSON)
+    // Render State Delta
     const renderStateDelta = (value: any) => {
         if (!value) return <span className="text-slate-500">—</span>;
 
         let parsed = value;
 
-        // If it's a string, try to parse it as JSON
         if (typeof value === "string") {
             try {
                 parsed = JSON.parse(value);
@@ -56,9 +54,7 @@ export const InventoryAuditLogs: React.FC = () => {
             }
         }
 
-        // If it's an object or array (from JSONB or successful parse)
         if (typeof parsed === "object" && parsed !== null) {
-            // Handle itemized order list format
             if (parsed.items && Array.isArray(parsed.items)) {
                 return (
                     <span className="text-slate-200">
@@ -67,12 +63,10 @@ export const InventoryAuditLogs: React.FC = () => {
                 );
             }
 
-            // Handle legacy "total_items" format
             if (parsed.total_items !== undefined) {
                 return <span className="text-slate-300">Total Items Taken: {parsed.total_items}</span>;
             }
 
-            // Fallback for general objects (e.g. inventory amount updates, user edits)
             return (
                 <span className="text-slate-300 font-mono text-[11px]">
                     {Object.entries(parsed)
@@ -112,7 +106,6 @@ export const InventoryAuditLogs: React.FC = () => {
         <div className="w-full">
             <main className="p-8 flex flex-col gap-6 max-w-5xl mx-auto w-full">
 
-                {/* HEADER SECTION */}
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <h1 className="text-2xl font-bold text-slate-100">System Audit Logs</h1>
@@ -147,7 +140,6 @@ export const InventoryAuditLogs: React.FC = () => {
                     </div>
                 )}
 
-                {/* SCROLLABLE AUDIT TABLE CONTAINER */}
                 <div className="bg-[#0b1326] rounded-2xl shadow-xl h-125 flex flex-col overflow-hidden border border-slate-800/80">
                     <div className="flex-1 overflow-y-auto scrollbar-thin">
                         {loading ? (

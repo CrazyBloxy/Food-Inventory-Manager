@@ -39,7 +39,6 @@ export const EmployeeDashboard: React.FC = () => {
         fetchData();
     }, []);
 
-    // Helper to resolve category name from category_id or category relation
     const getCategoryName = (item: InventoryItem): string => {
         if (item.category?.category_name) {
             return item.category.category_name;
@@ -186,7 +185,7 @@ export const EmployeeDashboard: React.FC = () => {
                 </div>
             </main>
 
-            {/* FULL SCREEN REQUISITION WORKSPACE */}
+            {/* MODAL */}
             <AddOrderModal 
                 isOpen={openOrderModal} 
                 onClose={() => setOpenOrderModal(false)} 

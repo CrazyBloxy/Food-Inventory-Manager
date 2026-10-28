@@ -2,7 +2,6 @@ from fastapi import Depends, HTTPException, status, Header
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
-# Import get_db directly from database.py
 from src.db.database import get_db
 from src.db.models import User
 from src.core.security import decode_access_token, verify_pin_hash
@@ -12,7 +11,7 @@ from src.repositories.user_repo import UserRepository
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
 
-# 1. AUTHENTICATION DEPENDENCY
+# AUTHENTICATION DEPENDENCY
 async def get_current_user(
     token: str = Depends(oauth2_scheme),
     db: AsyncSession = Depends(get_db)) -> User:
@@ -44,7 +43,7 @@ async def get_current_user(
     return user
 
 
-# 2. ROLE-BASED ACCESS CONTROL DEPENDENCY
+# ROLE-BASED ACCESS CONTROL DEPENDENCY
 class RoleChecker:
     def __init__(self, allowed_roles: list[str]):
         self.allowed_roles = allowed_roles

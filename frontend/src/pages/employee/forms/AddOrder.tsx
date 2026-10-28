@@ -6,7 +6,7 @@ import type { InventoryItem, Category } from "../../../types";
 interface AddOrderModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onOrderSuccess?: () => void; // Optional callback to refresh dashboard inventory
+    onOrderSuccess?: () => void;
 }
 
 export const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, onOrderSuccess }) => {
@@ -26,7 +26,6 @@ export const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, o
     const [pinError, setPinError] = useState<string | null>(null);
     const [submitting, setSubmitting] = useState<boolean>(false);
 
-    // Fetch catalogue stock & categories on modal open
     useEffect(() => {
         if (!isOpen) return;
 
@@ -92,7 +91,7 @@ export const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, o
         );
     });
 
-    // Step 1: Trigger PIN Modal
+    // Trigger PIN Modal
     const handleInitOrder = () => {
         if (selectedItemIds.length === 0) {
             setError("Please select at least one item to place an order.");
@@ -114,7 +113,7 @@ export const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, o
         setShowPinModal(true);
     };
 
-    // Step 2: Verify PIN & Execute POST Request
+    // Verify PIN & Execute 
     const handleFinalizeOrder = async (e: React.FormEvent) => {
         e.preventDefault();
         if (pin.length !== 4) {
@@ -154,7 +153,6 @@ export const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, o
                 await foodPantryService.getInventory();
             }
 
-            // Cleanup & Close
             setShowPinModal(false);
             setSelectedItemIds([]);
             setQuantities({});
@@ -308,7 +306,7 @@ export const AddOrderModal: React.FC<AddOrderModalProps> = ({ isOpen, onClose, o
                     </div>
                 </div>
 
-                {/* 4-PIN VERIFICATION OVERLAY SUB-MODAL */}
+                {/* 4-PIN VERIFICATION OVERLAY MODAL */}
                 {showPinModal && (
                     <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
                         <div className="bg-[#0b1326] border border-slate-700/80 w-full max-w-sm rounded-2xl p-6 shadow-2xl flex flex-col items-center text-center relative animate-in fade-in zoom-in duration-150">

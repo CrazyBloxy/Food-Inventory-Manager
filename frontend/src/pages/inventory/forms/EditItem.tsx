@@ -31,7 +31,7 @@ export const EditItemModal: React.FC<EditInventoryModalProps> = ({
     const [pinError, setPinError] = useState<string | null>(null);
     const [submitting, setSubmitting] = useState(false);
 
-    // Populate fields when modal opens or item changes
+    // Validate form values and trigger PIN Modal overlay
     useEffect(() => {
         if (isOpen && item) {
             setItemName(item.item_name || "");
@@ -47,7 +47,6 @@ export const EditItemModal: React.FC<EditInventoryModalProps> = ({
 
     if (!isOpen || !item) return null;
 
-    // Step 1: Validate form values and trigger PIN Modal overlay
     const handleInitialSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         
@@ -62,7 +61,7 @@ export const EditItemModal: React.FC<EditInventoryModalProps> = ({
         setShowPinModal(true);
     };
 
-    // Step 2: Verify PIN & Execute PUT/PATCH Request to Update Item
+    // Verify PIN & Execute 
     const handleFinalizeEdit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (pin.length !== 4) {
@@ -186,7 +185,7 @@ export const EditItemModal: React.FC<EditInventoryModalProps> = ({
                     </div>
                 </form>
 
-                {/* 4-PIN VERIFICATION OVERLAY SUB-MODAL */}
+                {/* 4-PIN VERIFICATION OVERLAY MODAL */}
                 {showPinModal && (
                     <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-sm rounded-2xl flex items-center justify-center p-4">
                         <div className="bg-[#0b1326] border border-slate-700/80 w-full max-w-sm rounded-2xl p-6 shadow-2xl flex flex-col items-center text-center relative animate-in fade-in zoom-in duration-150">
@@ -241,7 +240,6 @@ export const EditItemModal: React.FC<EditInventoryModalProps> = ({
                                     </button>
                                 </div>
                             </form>
-
                         </div>
                     </div>
                 )}

@@ -3,7 +3,7 @@ import { foodPantryService } from "../../services/api";
 import { LuSearch, LuRefreshCw, LuShieldAlert } from "react-icons/lu";
 import type { UniversalAuditLog } from "../../types";
 
-// Helper function to calculate and isolate only fields that actually changed
+// Function to calculate and isolate only fields that actually changed
 const getChangedDelta = (oldVal: any, newVal: any) => {
     try {
         const parsedOld = typeof oldVal === 'string' ? JSON.parse(oldVal) : oldVal;
@@ -181,7 +181,7 @@ export const AdminAuditLogs: React.FC = () => {
                     </div>
                 )}
 
-                {/* SCROLLABLE AUDIT RECORDS TABLE CONTAINER */}
+                {/* AUDIT RECORDS TABLE CONTAINER */}
                 <div className="bg-[#0b1326] rounded-2xl shadow-xl h-125 flex flex-col overflow-hidden border border-slate-800/80">
                     <div className="flex-1 overflow-y-auto scrollbar-thin">
                         <table className="table w-full text-slate-300 table-pin-rows">
@@ -232,7 +232,6 @@ export const AdminAuditLogs: React.FC = () => {
                                                     {getResolvedUsername(log)}
                                                 </td>
 
-                                                {/* Action Type Badge Indicators (Customized Colors) */}
                                                 <td className="py-4 px-4">
                                                     {(() => {
                                                         const action = (log.action_type || "").toUpperCase();
