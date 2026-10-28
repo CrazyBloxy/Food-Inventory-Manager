@@ -1,4 +1,3 @@
-# src/api/v1/audit.py
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
